@@ -1,0 +1,13 @@
+const USER_STATUS_ACTIVE = "active";
+const USER_STATUS_INACTIVE = "inactive";
+
+const USER_STATUS_LIST = [
+    USER_STATUS_ACTIVE,
+    USER_STATUS_INACTIVE,
+];
+
+module.exports = {
+    USER_STATUS_ACTIVE,
+    USER_STATUS_INACTIVE,
+    USER_STATUS_LIST,
+}

@@ -1,0 +1,40 @@
+version: '3.7'
+
+volumes:
+  skilvul_api_app_mongo_data: { }
+  skilvul_api_app_node_modules: { }
+
+networks:
+  skilvul_api_app:
+    driver: bridge
+
+services:
+  skilvul_api_app_mongo:
+    container_name: skilvul_api_app_mongo
+    image: mongo
+    networks:
+      - skilvul_api_app
+    environment:
+      MONGODB_USER: root
+      MONGODB_PASSWORD: passroot
+    ports:
+      - "27017:27017"
+    command: mongod
+    volumes:
+      - skilvul_api_app_mongo_data:/data/db
+  skilvul_api:
+    container_name: skilvul_api
+    depends_on:
+      - skilvul_api_app_mongo
+    networks:
+      - skilvul_api_app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/usr/src/app
+      - skilvul_api_app_node_modules:/usr/src/app/node_modules

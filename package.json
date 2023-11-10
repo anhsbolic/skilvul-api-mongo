@@ -1,0 +1,36 @@
+{
+  "name": "skilvul-api-mongo",
+  "version": "1.0.0",
+  "description": "Simple Marketplace API Service",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anhsbolic/skilvul-api-mongo-js.git"
+  },
+  "author": "Anhar Solehudin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anhsbolic/skilvul-api-mongo-js/issues"
+  },
+  "homepage": "https://github.com/anhsbolic/skilvul-api-mongo-js#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bluebird": "^3.7.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "moment": "^2.29.4",
+    "mongoose": "^7.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.6.1",
+    "nodemon": "^3.0.1"
+  }
+}
