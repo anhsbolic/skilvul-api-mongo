@@ -48,6 +48,7 @@ const login = async (body) => {
 
     // generate JWT
     const payloadJWT = {
+        user_id: user._id,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,

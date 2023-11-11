@@ -66,6 +66,32 @@ const responseBadRequest = (res, msg = 'Bad Request') => {
 };
 
 /**
+ * Response Unauthenticated
+ * @param {Object} res express response object
+ * @param {String} msg message
+ */
+const responseUnauthenticated = (res, msg = 'Unauthenticated') => {
+    res.status(401).send({
+        code: 401,
+        success: false,
+        message: msg,
+    });
+};
+
+/**
+ * Response Forbidden
+ * @param {Object} res express response object
+ * @param {String} msg message
+ */
+const responseForbidden = (res, msg = 'Forbidden') => {
+    res.status(403).send({
+        code: 403,
+        success: false,
+        message: msg,
+    });
+};
+
+/**
  * Response Not Found
  * @param {Object} res express response object
  * @param {String} msg message
@@ -114,6 +140,8 @@ module.exports = {
     responseFail,
     responseCreated,
     responseBadRequest,
+    responseUnauthenticated,
+    responseForbidden,
     responseNotFound,
     responseUnprocessableEntity,
     responseError,

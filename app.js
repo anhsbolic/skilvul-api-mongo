@@ -9,8 +9,8 @@ const respond = require('./utils/respond');
 const logger = require('./utils/logger');
 
 // import API Routes
-const authApiV1 = require('./domains/auth/v1/api');
-const userApiV1 = require('./domains/user/v1/api');
+const setPublicRoutes = require('./routes/public');
+const setPrivateRoutes = require('./routes/private');
 
 // db start & configs
 try {
@@ -55,9 +55,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
-// API routers
-app.use('/api/v1/auth', authApiV1);
-app.use('/api/v1/users', userApiV1);
+// Set Routes
+setPublicRoutes(app);
+setPrivateRoutes(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
