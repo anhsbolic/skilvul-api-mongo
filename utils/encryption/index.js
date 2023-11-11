@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const logger = require("../logger");
 
 const BCRYPT_SALT_ROUND = 10;
 
@@ -40,7 +41,12 @@ const generateJWT = (payload) => {
  * @param {String} token
  */
 const verifyJWT = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET_KEY);
+    } catch (e) {
+        logger.error(e);
+        return false;
+    }
 }
 
 module.exports = {
