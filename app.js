@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-// import libraries
-const respond = require('./libraries/respond');
-const logger = require('./libraries/logger');
+// import utils
+const respond = require('./utils/respond');
+const logger = require('./utils/logger');
 
 // import API Routes
+const authApiV1 = require('./domains/auth/v1/api');
 const userApiV1 = require('./domains/user/v1/api');
 
 // db start & configs
@@ -55,6 +56,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
 // API routers
+app.use('/api/v1/auth', authApiV1);
 app.use('/api/v1/users', userApiV1);
 
 // catch 404 and forward to error handler

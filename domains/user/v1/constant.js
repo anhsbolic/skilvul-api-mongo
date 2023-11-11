@@ -1,13 +1,27 @@
+// STATUS
 const USER_STATUS_ACTIVE = "active";
 const USER_STATUS_INACTIVE = "inactive";
-
 const USER_STATUS_LIST = [
     USER_STATUS_ACTIVE,
     USER_STATUS_INACTIVE,
+];
+
+// ROLES
+const USER_ROLE_ADMIN = "admin";
+const USER_ROLE_BUYER = "buyer";
+const USER_ROLE_SELLER = "seller";
+const USER_ROLE_LIST = [
+    USER_ROLE_ADMIN,
+    USER_ROLE_BUYER,
+    USER_ROLE_SELLER
 ];
 
 module.exports = {
     USER_STATUS_ACTIVE,
     USER_STATUS_INACTIVE,
     USER_STATUS_LIST,
+    USER_ROLE_ADMIN,
+    USER_ROLE_BUYER,
+    USER_ROLE_SELLER,
+    USER_ROLE_LIST,
 }

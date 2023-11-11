@@ -22,18 +22,25 @@ const userSchema = mongoose.Schema(
         },
         phone: {
             type: String,
-            required: true,
         },
         address: {
             type: String,
+        },
+        role: {
+            type: String,
             required: true,
+            enum: ['admin', 'buyer', 'seller'],
         },
         status: {
             type: String,
             required: true,
             enum: ['active', 'inactive'],
             default: 'active',
-        }
+        },
+        registered_at: {
+            type: Date,
+            default: Date.now,
+        },
     },
     {timestamps: true}
 );

@@ -1,4 +1,4 @@
-const respond = require('./../../libraries/respond');
+const respond = require('./../../utils/respond');
 
 module.exports = (joiSchema) => {
     return async (req, res, next) => {

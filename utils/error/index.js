@@ -3,8 +3,8 @@
  */
 const BAD_REQUEST = 400;
 const BAD_REQUEST_MSG = 'BAD REQUEST';
-const UNAUTHORIZED = 401;
-const UNAUTHORIZED_MSG = 'UNAUTHORIZED';
+const UNAUTHENTICATED = 401;
+const UNAUTHENTICATED_MSG = 'UNAUTHENTICATED';
 const FORBIDDEN = 403;
 const FORBIDDEN_MSG = 'FORBIDDEN';
 const NOT_FOUND = 404;
@@ -26,12 +26,12 @@ const throwBadRequest = (message = BAD_REQUEST_MSG) => {
 };
 
 /**
- * Throw Unauthorized Error with Message
+ * Throw Unauthenticated Error with Message
  * @param {String} message Error Message
  */
-const throwUnauthorized = (message = UNAUTHORIZED_MSG) => {
+const throwUnauthenticated = (message = UNAUTHENTICATED_MSG) => {
     let e = new Error(message);
-    e.statusCode = UNAUTHORIZED;
+    e.statusCode = UNAUTHENTICATED;
 
     throw e;
 };
@@ -82,13 +82,13 @@ const throwInternalServerError = (message = INTERNAL_SERVER_ERROR_MSG) => {
 
 module.exports = {
     BAD_REQUEST,
-    UNAUTHORIZED,
+    UNAUTHENTICATED,
     FORBIDDEN,
     NOT_FOUND,
     UNPROCESSABLE_ENTITY,
     INTERNAL_SERVER_ERROR,
     throwBadRequest,
-    throwUnauthorized,
+    throwUnauthenticated,
     throwForbidden,
     throwNotFound,
     throwUnprocessableEntity,

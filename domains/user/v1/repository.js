@@ -1,5 +1,5 @@
 const {User} = require('../user');
-const mongoQuery = require('../../../libraries/mongoQuery');
+const mongoQuery = require('../../../utils/mongoQuery');
 const constant = require('./constant');
 
 /**
@@ -112,14 +112,22 @@ const list = async (params) => {
  * @param {String} id
  */
 const findById = async (id) => {
-    return User.findOne({_id: id}).lean();
+    return User.findOne({_id: id});
+};
+
+/**
+ * Find By Email
+ * @param {String} email
+ */
+const findByEmail = async (email) => {
+    return User.findOne({email: email});
 };
 
 /**
  * Create New Data
  * @param {Object} data
  */
-const create = async (data) => {
+const save = async (data) => {
     let user = new User(data);
     return user.save();
 };
@@ -147,7 +155,8 @@ module.exports = {
     total,
     list,
     findById,
-    create,
+    findByEmail,
+    save,
     updateOne,
     deleteOne,
 };

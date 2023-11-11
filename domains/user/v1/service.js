@@ -1,5 +1,5 @@
 const repository = require('./repository');
-const errorHelper = require('../../../libraries/error');
+const errorHelper = require('../../../utils/error');
 
 /**
  * Get Detail User

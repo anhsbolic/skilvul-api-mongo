@@ -1,6 +1,6 @@
-const errorHelper = require('../../../libraries/error');
-const logger = require('../../../libraries/logger');
-const respond = require('../../../libraries/respond');
+const errorHelper = require('../../../utils/error');
+const logger = require('../../../utils/logger');
+const respond = require('../../../utils/respond');
 const service = require('./service');
 
 /**
