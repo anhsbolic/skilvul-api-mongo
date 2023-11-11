@@ -1,6 +1,6 @@
 const joi = require('joi');
 const {joiPasswordExtendCore} = require('joi-password');
-const {USER_ROLE_ADMIN, USER_ROLE_BUYER, USER_ROLE_SELLER} = require("../../user/v1/constant");
+const {USER_ROLE_LIST} = require("../../user/v1/constant");
 const joiPassword = joi.extend(joiPasswordExtendCore);
 
 const register = joi.object({
@@ -15,7 +15,9 @@ const register = joi.object({
         .noWhiteSpaces()
         .onlyLatinCharacters()
         .required(),
-    role: joi.string().required().allow(USER_ROLE_ADMIN, USER_ROLE_BUYER, USER_ROLE_SELLER),
+    role: joi.string()
+        .valid(...USER_ROLE_LIST)
+        .required(),
 });
 
 const login = joi.object({

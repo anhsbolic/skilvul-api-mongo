@@ -49,18 +49,4 @@ const userSchema = mongoose.Schema(
 userSchema.index({email: 1}, {name: "user_email_idx"});
 userSchema.index({status: 1}, {name: "user_status_idx"});
 
-// index search
-userSchema.index(
-    {
-        description: "text"
-    },
-    {
-        name: "user_search_idx",
-        weights: {
-            first_name: 2,
-            last_name: 1,
-        }
-    }
-);
-
 exports.User = mongoose.model("User", userSchema);

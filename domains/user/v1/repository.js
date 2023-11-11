@@ -3,51 +3,6 @@ const mongoQuery = require('../../../utils/mongoQuery');
 const constant = require('./constant');
 
 /**
- * Get Total Data
- * @param {Object} params
- */
-const total = async (params) => {
-    // init aggregate pipelines
-    let pipelines = [];
-
-    // init filters
-    let filters = [];
-
-    // filter : status
-    if (params.status && constant.USER_STATUS_LIST.includes(params.status)) {
-        filters.push({status: params.status});
-    }
-
-    // filter : search
-    if (params.search && params.search !== "") {
-        filters.push({$text: {$search: params.search}});
-    }
-
-    // filter : start_date or end_date
-    if (params.start_date || params.end_date) {
-        filters.push({
-            'createdAt': mongoQuery.betweenDate(params.start_date, params.end_date),
-        });
-    }
-
-    // assign filters to pipelines
-    if (filters.length > 0) {
-        pipelines.push({$match: {$and: filters}});
-    }
-
-    // count
-    pipelines.push({$count: 'total'});
-
-    // result
-    let result = await User.aggregate(pipelines);
-    if (result && result.length > 0) {
-        return result[0];
-    }
-
-    return {total: 0};
-};
-
-/**
  * Get List Data
  * @param {Object} params
  */
@@ -59,25 +14,23 @@ const list = async (params) => {
     let filters = [];
 
     // filter : status
-    if (params.status && params.status !== "") {
+    if (params.status && constant.USER_STATUS_LIST.includes(params.status)) {
         filters.push({status: params.status});
     }
 
-    // filter : search
-    if (params.search && params.search !== "") {
-        filters.push({$text: {$search: params.search}});
+    // filter : role
+    if (params.role && constant.USER_ROLE_LIST.includes(params.role)) {
+        filters.push({role: params.role});
     }
 
-    // filter : start_date or end_date
-    if (params.start_date || params.end_date) {
+    // filter : search
+    if (params.search && params.search !== "") {
         filters.push({
-            'createdAt': mongoQuery.betweenDate(params.start_date, params.end_date),
+            $or: [
+                {first_name: mongoQuery.searchLike(params.search)},
+                {last_name: mongoQuery.searchLike(params.search)},
+            ]
         });
-    }
-
-    // filter : search
-    if (params.search && params.search !== "") {
-        filters.push({$text: {$search: params.search}});
     }
 
     // assign filters to pipelines
@@ -87,13 +40,21 @@ const list = async (params) => {
 
     // sort
     pipelines.push({
-        $sort: mongoQuery.getSort(
-            params.sort_by,
-            'created.at',
-            params.sort_dir,
-            'desc'
-        ),
+        $sort: mongoQuery.getSort(params.sort_by, 'created.at', params.sort_dir, 'desc'),
     });
+
+    // get total user
+    let total = await User.countDocuments();
+
+    // get total filtered
+    let totalFiltered = 0;
+    let totalFilteredPipeline = []
+    totalFilteredPipeline.push(...pipelines);
+    totalFilteredPipeline.push({$count: 'total'});
+    let resTotalFiltered = await User.aggregate(totalFilteredPipeline);
+    if (resTotalFiltered && resTotalFiltered.length > 0) {
+        totalFiltered = resTotalFiltered[0].total;
+    }
 
     // pagination
     if (params.page && params.limit) {
@@ -103,8 +64,19 @@ const list = async (params) => {
         pipelines.push({$limit: skip + limitVal}, {$skip: skip});
     }
 
-    // result
-    return User.aggregate(pipelines);
+    // get data
+    const data = await User.aggregate(pipelines);
+
+    // return
+    return {
+        data: data,
+        meta: {
+            page: params.page,
+            limit: params.limit,
+            total: total,
+            total_filtered: totalFiltered,
+        },
+    };
 };
 
 /**
@@ -152,7 +124,6 @@ const deleteOne = async (id) => {
 };
 
 module.exports = {
-    total,
     list,
     findById,
     findByEmail,
