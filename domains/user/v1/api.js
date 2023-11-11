@@ -1,8 +1,14 @@
 const express = require('express');
+const multer = require('multer');
 const inputValidation = require('../../../middlewares/inputValidation');
 const controller = require('./controller');
 const validation = require('./validation');
 
+// SETUP MULTER
+const storage = multer.memoryStorage(); // Store the file in memory
+const upload = multer({ storage: storage });
+
+// SETUP ROUTER
 const router = express.Router();
 
 /**
@@ -52,5 +58,14 @@ router.patch(
     controller.updateStatus
 );
 
+/**
+ * Upload Avatar User
+ * @api private
+ */
+router.post(
+    '/:id/avatar',
+    upload.single('avatar'),
+    controller.updateAvatar
+);
 
 module.exports = router;

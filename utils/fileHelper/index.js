@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 // https://cloudinary.com/documentation/image_upload_api_reference
 
-const upload = async (file) => {
+const upload = async (fileBuffer) => {
     cloudinary.config({
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
@@ -15,10 +15,10 @@ const upload = async (file) => {
     }
 
     return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(file, options, (error, result) => {
+        cloudinary.uploader.upload_stream(options, (error, result) => {
             if (error) reject(error);
             resolve(result);
-        });
+        }).end(fileBuffer);
     });
 }
 

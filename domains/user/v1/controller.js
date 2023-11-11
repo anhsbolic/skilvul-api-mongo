@@ -108,10 +108,35 @@ const updateStatus = async (req, res) => {
     }
 };
 
+/**
+ * Update Avatar User
+ * @param {Object} req express request object
+ * @param {Object} res express response object
+ */
+const updateAvatar = async (req, res) => {
+    try {
+        const result = await service.updateAvatar(req.params.id, req.file);
+        return respond.responseSuccess(res, "User Avatar updated successfully", result, undefined);
+    } catch (e) {
+        if (e.name === errorHelper.NOT_FOUND) {
+            return respond.responseNotFound(res, e.message);
+        }
+        if (e.name === errorHelper.BAD_REQUEST) {
+            return respond.responseBadRequest(res, e.message);
+        }
+        if (e.name === errorHelper.UNPROCESSABLE_ENTITY) {
+            return respond.responseUnprocessableEntity(res, e.message);
+        }
+        logger.info(e);
+        return respond.responseError(res, e.statusCode, e.message);
+    }
+};
+
 module.exports = {
     index,
     detail,
     updateOne,
     deleteOne,
     updateStatus,
+    updateAvatar,
 };

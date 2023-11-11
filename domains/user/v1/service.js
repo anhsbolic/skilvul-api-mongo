@@ -1,5 +1,6 @@
 const repository = require('./repository');
 const errorHelper = require('../../../utils/error');
+const fileHelper = require("../../../utils/fileHelper");
 
 /**
  * Get List User
@@ -43,14 +44,13 @@ const updateOne = async (id, body) => {
 /**
  * Delete One User
  * @param {String} id
- * @param {Object} body
  */
-const deleteOne = async (id, body) => {
+const deleteOne = async (id) => {
     const user = await repository.findById(id);
     if (!user) errorHelper.throwNotFound("User Not Found");
 
     // delete user
-    let deletedUser = await repository.deleteOne(id, body);
+    let deletedUser = await repository.deleteOne(id);
     if (!deletedUser) errorHelper.throwInternalServerError("Delete User Failed");
 
     return true;
@@ -74,10 +74,37 @@ const updateStatus = async (id, body) => {
     };
 };
 
+/**
+ * Update Avatar User
+ * @param {String} id
+ * @param {Object} file
+ */
+const updateAvatar = async (id, file) => {
+    const user = await repository.findById(id);
+    if (!user) errorHelper.throwNotFound("User Not Found");
+
+    // upload file
+    let uploadedFile = await fileHelper.upload(file.buffer);
+    if (!uploadedFile) errorHelper.throwInternalServerError("Upload File Failed");
+
+    // update user
+    const updateData = {
+        avatar: uploadedFile.secure_url,
+    };
+    let updatedUser = await repository.updateOne(id, updateData);
+    if (!updatedUser) errorHelper.throwInternalServerError("Update User Failed");
+
+    return {
+        user: updatedUser
+    };
+};
+
+
 module.exports = {
     index,
     detail,
     updateOne,
     deleteOne,
     updateStatus,
+    updateAvatar,
 };
